@@ -10,6 +10,16 @@ f4g_df <- haven::read_dta(paste0(path_gtml_earlier_data, "/META data as of 20 Ju
   dplyr::select(iduni,f4g1:f4g6,weight,fat) %>% 
   mutate(handgrip = case_when(is.na(weight) ~ NA_real_,
                               TRUE ~ rowMeans(.[,c("f4g3","f4g4","f4g5","f4g6")],na.rm = TRUE)/weight))
+
+meta_age <- haven::read_dta(paste0(path_gtml_earlier_data, "/META data as of 20 Jun 2017_stata12.dta")) %>% 
+  dplyr::select(iduni,fechan,fecha_censo,f1v1f1,f1v2f2,f1v3f3,f1v4f4) %>% 
+  mutate(interview_date = case_when(!is.na(f1v4f4) ~ f1v4f4,
+                                    !is.na(f1v3f3) ~ f1v3f3,
+                                    !is.na(f1v2f2) ~ f1v2f2,
+                                    !is.na(f1v1f1) ~ f1v1f1,
+                                    TRUE ~ fecha_censo)) %>% 
+  mutate(age = round((interview_date-fechan)/365.25) %>% as.numeric(.))
+
 ur <- readRDS(paste0(path_incap_ses_dfa,"/urbano_rural/urbano_rural.RDS"))
 incap_early_life <- haven::read_dta(paste0(path_incap_rally_box,"/Body composition and fitness paper/incap_early_life_imputed.dta"))
 
@@ -58,7 +68,10 @@ cardio <- f4d_df  %>%
             by=c("iduni"="id_uni")) %>% 
   left_join(meta_srq %>% 
               dplyr::select(iduni,d_srq20_twoway,d_srq20_total),
-            by=c("iduni"))
+            by=c("iduni")) %>% 
+  left_join(meta_age %>% 
+              dplyr::select(iduni,age),
+            by="iduni")
 
 source("preprocessing/icpaux01_variable list.R")
 
