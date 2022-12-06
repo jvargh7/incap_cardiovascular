@@ -7,5 +7,6 @@ covariate_vars <- c("iduni","moscho_imputed","moage_imputed","moht_imputed",
                     "formal","age","adht","adwt","fat","wealth","d_srq20_twoway")
 
 exposure1_vars <- c("steps_mean","mvpa_tot_mean","steps1000_mean","mvpa_recommended")
-exposure2_vars <- c("residual_distance","baseline","freq_peak","drop6to7")
+exposure2_vars <- c("residual_distance","baseline","freq_peak","drop6to7",
+                    "pctHRR")
 exposure3_vars <- c("handgrip")

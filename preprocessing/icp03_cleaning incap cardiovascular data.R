@@ -32,7 +32,7 @@ meta_srq <- readRDS(paste0(path_incap_rally_box,"/SRQ-20 changes/working/meta_sr
 # Cardio initial -----------
 cardio <- f4d_df  %>% 
   dplyr::select(iduni,
-                  pctHRR, completed_steps, 
+                  pctHRR, completed_steps, pctHRR,
                   completed_distance_meters, baseline, change1to6, 
                   freq_peak, drop6to7, residual_distance,contains("freq")) %>% 
   full_join(f4k_df %>% 
