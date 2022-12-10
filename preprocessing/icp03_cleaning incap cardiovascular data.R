@@ -28,6 +28,8 @@ f4k_df <- readRDS(paste0(path_incap_rally_box,"/Activity trajectories/working/f4
 lab_data <- read_csv(paste0(path_incap_cardio_folder,"/working/incap_lab complete_pca_fasting and D_v2.csv"))
 pcscore <- read_csv(paste0(path_incap_cardio_folder,"/working/PCscore_for_Jithin_2022-04-19.csv"))
 meta_srq <- readRDS(paste0(path_incap_rally_box,"/SRQ-20 changes/working/meta_srq.RDS"))
+arterial_stiffness <- read_dta(paste0(path_incap_cardio_folder,"/working/Master dataset arterial stiffness META - clean NO MI Set up.dta"))
+
 
 # Cardio initial -----------
 cardio <- f4d_df  %>% 
@@ -71,7 +73,10 @@ cardio <- f4d_df  %>%
             by=c("iduni")) %>% 
   left_join(meta_age %>% 
               dplyr::select(iduni,age),
-            by="iduni")
+            by="iduni") %>% 
+  left_join(arterial_stiffness %>% 
+              dplyr::select(iduni, c_aix, c_aixhr75,pwv),
+            by = "iduni")
 
 source("preprocessing/icpaux01_variable list.R")
 

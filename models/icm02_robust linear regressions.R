@@ -77,4 +77,4 @@ bind_rows(summary_physical_activity %>%
             mutate(exposure = "Aerobic Fitness"),
           summary_muscle_strength %>% 
             mutate(exposure = "Muscle Strength")) %>% 
-  write_csv(.,paste0(path_incap_cardio_folder,"/working/summary_robust linear regressions.csv"))
+  write_csv(.,"models/icm02_robust linear regressions.csv")

@@ -16,7 +16,7 @@ hr_reserve <- readxl::read_excel(paste0(path_incap_rally_box,"/Heart rate respon
 
 ses_masters <- readRDS(paste0(path_incap_ses_dfa,"/ses_cs.RDS"))
 
-f4d_df <- read_dta(paste0(path_gtml_earlier_data, "/META data as of 20 Jun 2017_stata12.dta")) %>% 
+f4d_df <- haven::read_dta(paste0(path_gtml_earlier_data, "/META data as of 20 Jun 2017_stata12.dta")) %>% 
   dplyr::select(iduni,starts_with("f4d"),sexo,height,weight) %>% 
   mutate_at(vars(sexo), function(x) factor(x,levels=attr(x,"labels"),labels=attr(x,"labels") %>% attr(.,"names"))) %>% 
     left_join(hr_reserve %>% 
@@ -132,7 +132,7 @@ f4d_df <- read_dta(paste0(path_gtml_earlier_data, "/META data as of 20 Jun 2017_
 
   
 # table(!is.na(f4d_df$completed_steps)) Participated in 6MWT ---------
-  mutate(residual_distance = lm(completed_distance_meters ~ height_meta_hc*sexo + completed_steps*sexo + adbmi*sexo + age*sexo) %>% 
+  mutate(residual_distance = lm(completed_distance_meters ~ height_meta_hc*sexo + adbmi*sexo + age*sexo) %>% 
            residuals(.),
          intensity = residual_distance %>%
            scale(.)) %>% 
@@ -144,8 +144,8 @@ f4d_df <- read_dta(paste0(path_gtml_earlier_data, "/META data as of 20 Jun 2017_
          drop6to7 = freq_minute6 - freq_minute7)
 
 saveRDS(f4d_df,paste0(path_incap_rally_box,"/Heart rate response/working/f4d_df.RDS"))
-write_dta(f4d_df,paste0(path_incap_rally_box,"/Heart rate response/shared/f4d_df_stata12.dta"),version = 12)
-write_dta(f4d_df,paste0(path_incap_rally_box,"/Heart rate response/shared/f4d_df_stata14.dta"),version = 14)
+haven::write_dta(f4d_df,paste0(path_incap_rally_box,"/Heart rate response/shared/f4d_df_stata12.dta"),version = 12)
+haven::write_dta(f4d_df,paste0(path_incap_rally_box,"/Heart rate response/shared/f4d_df_stata14.dta"),version = 14)
 writexl::write_xlsx(f4d_df,paste0(path_incap_rally_box,"/Heart rate response/shared/f4d_df.xlsx"))
 
 source(paste0(path_cohorts_repo,"/package/build_dict_custom.R"))
