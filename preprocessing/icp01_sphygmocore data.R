@@ -2,7 +2,7 @@
 
 # DFA ----------
 gtml_dfa <- readRDS(paste0(path_cohorts_data_for_analysis,"/cohorts_data_for_analysis.RDS")) %>%
-  dplyr::filter(site == "guatemala") %>% 
+  dplyr::filter(site == 2) %>% 
   # dplyr::filter(!is.na(gtadladdercommunity2018)|!is.na(gtadladdereconomic2018)) %>% 
   dplyr::mutate(id_uni = pin - 20000000) 
 
@@ -16,8 +16,9 @@ hr_reserve <- readxl::read_excel(paste0(path_incap_rally_box,"/Heart rate respon
 
 ses_masters <- readRDS(paste0(path_incap_ses_dfa,"/ses_cs.RDS"))
 
-f4d_df <- haven::read_dta(paste0(path_gtml_earlier_data, "/META data as of 20 Jun 2017_stata12.dta")) %>% 
-  dplyr::select(iduni,starts_with("f4d"),sexo,height,weight) %>% 
+# f4d_df <- haven::read_dta(paste0(path_gtml_earlier_data, "/META data as of 20 Jun 2017_stata12.dta")) %>% 
+f4d_df <- haven::read_dta(paste0(path_gtml_earlier_data, "/ELIO all 20 Jun 2017.dta")) %>% 
+  dplyr::select(iduni,starts_with("f4d"),sexo,height,weight) %>%
   mutate_at(vars(sexo), function(x) factor(x,levels=attr(x,"labels"),labels=attr(x,"labels") %>% attr(.,"names"))) %>% 
     left_join(hr_reserve %>% 
                 dplyr::select(iduni,pwv_Heart_Rate,pctHRR),

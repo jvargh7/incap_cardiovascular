@@ -1,7 +1,8 @@
 # Originally: "C:/code/incap/2015-18/f4k01_passometer data.R"
 
 
-f4k_df <- read_dta(paste0(path_gtml_earlier_data, "/META data as of 20 Jun 2017_stata12.dta")) %>% 
+f4k_df <- haven::read_dta(paste0(path_gtml_earlier_data, "/ELIO all 20 Jun 2017.dta")) %>% 
+# f4k_df <- read_dta(paste0(path_gtml_earlier_data, "/META data as of 20 Jun 2017_stata12.dta")) %>% 
   dplyr::select(iduni,sexo,height,weight,starts_with("f4k")) %>% 
   mutate_at(vars(sexo), function(x) factor(x,levels=attr(x,"labels"),labels=attr(x,"labels") %>% attr(.,"names"))) %>% 
   rename(start_day = f4k1_1,
